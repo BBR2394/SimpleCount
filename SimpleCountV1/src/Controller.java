@@ -1,20 +1,47 @@
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Controller implements ActionListener {
+public class Controller {
 	View view = null;
 	Model model = null;
+	private boolean _LastAction = false;
 	public Controller()
 	{
-		view = new View(this);
+		model = new Model(view);
+		view = new View(this, model);
 		model = new Model(view);
 		model.addObserver(view);
 	}
 	
-	public void actionPerformed(ActionEvent act)
+	public void sendNumberToModel(String nb)
 	{
-		System.out.println("Ici !");
-		model.addNum("1");
+		model.addNum(nb);
+		_LastAction = false;
 	}
 	
+	public void sendOperator(String ope)
+	{
+		System.out.println("	-> je vais envoyer un ope a model");
+		if (_LastAction == false)
+		{
+			if (ope == "+")
+				model.add();
+			else if (ope == "-")
+				model.sub();
+			else if (ope == "x")
+				model.mult();
+			else if (ope == "=")
+				model.equal();
+			_LastAction = true;
+		}
+	}
+	
+	/*
+	public class BoutonListener implements ActionListener{
+	    //Redéfinition de la méthode actionPerformed()
+	    public void actionPerformed(ActionEvent arg0) {
+	    	model.addNum("1");        
+	    }
+	  }
+	*/
 }

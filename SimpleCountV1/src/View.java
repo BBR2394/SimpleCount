@@ -30,9 +30,12 @@ public class View extends JFrame implements Observer{
 	private JTextField textField;
 	private JPanel calculette = new JPanel();
 	private JPanel numbers = new JPanel();
+	private JPanel operator = new JPanel();
 	private JTextField ecran = new JTextField("&");
 	private Controller _ctrl = null;
 	private Model _model = null;
+	private boutonNumListener _bNumListen = null;
+	private boutonOperator _bOpeListen = new boutonOperator();
 	JButton bouton1 = new JButton("1");
 	JButton bouton2 = new JButton("2");
 	JButton bouton3 = new JButton("3");
@@ -43,17 +46,26 @@ public class View extends JFrame implements Observer{
 	JButton bouton8 = new JButton("8");
 	JButton bouton9 = new JButton("9");
 	JButton bouton0 = new JButton("0");
-	OperatorAction opAct = new OperatorAction();
+	JButton boutonComma = new JButton(",");
+	//OperatorAction opAct = new OperatorAction();
+	JButton buttonAC = new JButton("AC");
+	JButton buttonC = new JButton("C");
+	JButton buttonEqual = new JButton("="); 
+	JButton boutonPlus = new JButton("+");
+	JButton boutonSubs = new JButton("-");
+	JButton boutonMult = new JButton("x");
 	
-	public View(Controller ctrl)
+	public View(Controller ctrl, Model mod)
 	{
 		_ctrl = ctrl;
+		_model = mod;
 		this.setTitle("bonjour");
 		this.setSize(250, 350);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setResizable(false);
-	    //ecran.setEditable(false);
+	    ecran.setEditable(false);
+	    ecran.setHorizontalAlignment(SwingConstants.RIGHT);
 	    
 	    calculette.setBackground(Color.ORANGE);        
 	    //On prévient notre JFrame que notre JPanel sera son content pane
@@ -65,12 +77,31 @@ public class View extends JFrame implements Observer{
 	    textField.setEditable(false);
 	    textField.setColumns(10);
 	    */
-	    /*
-	
-		*/
+	    
 	    ecran.setPreferredSize(new Dimension(225, 25));
 	    numbers.setPreferredSize(new Dimension(150, 200));
-	    bouton1.addActionListener((ActionListener)_ctrl);
+
+	    boutonPlus.addActionListener(_bOpeListen);
+	    boutonSubs.addActionListener(_bOpeListen);
+	    boutonMult.addActionListener(_bOpeListen);
+	    buttonEqual.addActionListener(_bOpeListen);
+	    operator.add(buttonEqual);
+	    operator.add(boutonPlus);
+	    operator.add(boutonSubs);
+	    operator.add(boutonMult);
+	    
+	    _bNumListen = new boutonNumListener();
+	    bouton1.addActionListener(_bNumListen);
+	    bouton2.addActionListener(_bNumListen);
+	    bouton3.addActionListener(_bNumListen);
+	    bouton4.addActionListener(_bNumListen);
+	    bouton5.addActionListener(_bNumListen);
+	    bouton6.addActionListener(_bNumListen);
+	    bouton7.addActionListener(_bNumListen);
+	    bouton8.addActionListener(_bNumListen);
+	    bouton9.addActionListener(_bNumListen);
+	    bouton0.addActionListener(_bNumListen);
+	    boutonComma.addActionListener(_bNumListen);
 	    numbers.add(bouton1);
 	    numbers.add(bouton2);
 	    numbers.add(bouton3);
@@ -81,9 +112,11 @@ public class View extends JFrame implements Observer{
 	    numbers.add(bouton8);
 	    numbers.add(bouton9);
 	    numbers.add(bouton0);
+	    numbers.add(boutonComma);
 	    calculette.add(ecran, BorderLayout.NORTH);
 	    calculette.add(numbers, BorderLayout.CENTER);
-
+	    calculette.add(operator,  BorderLayout.EAST);
+	    
 	    setContentPane(calculette);
 	    setVisible(true);
 	}
@@ -102,14 +135,38 @@ public class View extends JFrame implements Observer{
 
 	public void initWindow()
 	{		
-		
-		
+		//ici je vais mettre tout ce que j'ai mis plus haut
 	}
 	
 	@Override
 	public void update(Observable o, Object arg)
 	{
-		System.out.println("il y a une MAJ de l'obj");
+		_model = (Model) o;
 		
+		//weatherUpdate = (ObservableExample) observable;
+		//System.out.println("Weather Report Live. Its "+weatherUpdate.getWeather());
+		this.setScreen(_model.getToEval());
+		System.out.println("il y a une MAJ de l'obj");
 	}
+	
+	public class boutonNumListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent act)
+		{
+			String num = ((JButton)act.getSource()).getText();
+			System.out.println("Ici !");
+			_ctrl.sendNumberToModel(num);
+		}
+	}
+	
+	public class boutonOperator implements ActionListener
+	{
+		public void actionPerformed(ActionEvent act)
+		{
+			String ope = ((JButton)act.getSource()).getText();
+			System.out.println("la !");
+			_ctrl.sendOperator(ope);
+		}
+	}
+
 }
