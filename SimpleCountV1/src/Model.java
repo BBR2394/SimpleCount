@@ -41,6 +41,16 @@ public class Model extends Observable {
 		_comma = false;
 	}
 	
+	public boolean resetCalc()
+	{
+		res = 0;
+		_lastOpe = "";
+		_comma = false;
+		toEval = "&";
+		setEvaluator("&");
+		return true;
+	}
+	
 	public boolean add()
 	{
 		if (res == 0)
@@ -96,7 +106,7 @@ public class Model extends Observable {
 		if (res == 0)
 		{
 			res = Double.parseDouble(toEval);
-			toEval += "x";
+			toEval += "*";
 			_lastOpe = "*";
 			_comma = false;
 			setEvaluator(toEval);
@@ -109,7 +119,7 @@ public class Model extends Observable {
 			_comma = false;
 			toEval = Double.toString(res);
 			//res = 0;
-			toEval += "x";
+			toEval += "*";
 			_lastOpe = "*";
 			setEvaluator(toEval);
 		}
@@ -118,7 +128,26 @@ public class Model extends Observable {
 	
 	public boolean div()
 	{
-		
+		if (res == 0)
+		{
+			res = Double.parseDouble(toEval);
+			toEval += "/";
+			_lastOpe = "/";
+			_comma = false;
+			setEvaluator(toEval);
+		}
+		else if (res != 0 && _dynamicCalc == true)
+		{
+			res /= Double.parseDouble(toEval.substring(toEval.lastIndexOf(_lastOpe) + 1));
+			System.out.println("le resultat");
+			System.out.println(res);
+			_comma = false;
+			toEval = Double.toString(res);
+			//res = 0;
+			toEval += "/";
+			_lastOpe = "/";
+			setEvaluator(toEval);
+		}
 		return true;
 	}
 	
@@ -130,8 +159,8 @@ public class Model extends Observable {
 			this.sub();
 		else if (_lastOpe == "*")
 			this.mult();
-		//else if (_lastOpe == "/")
-		//	this.div();
+		else if (_lastOpe == "/")
+			this.div();
 		_lastOpe = "=";
 		setEvaluator(Double.toString(res));
 		return false;	

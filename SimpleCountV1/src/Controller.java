@@ -22,6 +22,7 @@ public class Controller {
 	public void sendOperator(String ope)
 	{
 		System.out.println("	-> je vais envoyer un ope a model");
+		System.out.println(ope);
 		if (_LastAction == false)
 		{
 			if (ope == "+")
@@ -30,6 +31,13 @@ public class Controller {
 				model.sub();
 			else if (ope == "x")
 				model.mult();
+			else if (ope == "/")
+				model.div();
+			else if (ope == "AC")
+			{
+				model.resetCalc();
+				System.out.println("j'ai fait");
+			}
 			else if (ope == "=")
 				model.equal();
 			_LastAction = true;

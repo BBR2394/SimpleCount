@@ -51,9 +51,10 @@ public class View extends JFrame implements Observer{
 	JButton buttonAC = new JButton("AC");
 	JButton buttonC = new JButton("C");
 	JButton buttonEqual = new JButton("="); 
-	JButton boutonPlus = new JButton("+");
-	JButton boutonSubs = new JButton("-");
-	JButton boutonMult = new JButton("x");
+	JButton buttonPlus = new JButton("+");
+	JButton buttonSubs = new JButton("-");
+	JButton buttonMult = new JButton("x");
+	JButton buttonDiv = new JButton("/");
 	
 	public View(Controller ctrl, Model mod)
 	{
@@ -71,6 +72,8 @@ public class View extends JFrame implements Observer{
 	    //On prévient notre JFrame que notre JPanel sera son content pane
 	    //this.setContentPane();
 	    
+	    //numbers.setPreferredSize(new Dimension(100, 225));
+	    
 	    /*
 	    textField = new JTextField();
 	    textField.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -81,14 +84,18 @@ public class View extends JFrame implements Observer{
 	    ecran.setPreferredSize(new Dimension(225, 25));
 	    numbers.setPreferredSize(new Dimension(150, 200));
 
-	    boutonPlus.addActionListener(_bOpeListen);
-	    boutonSubs.addActionListener(_bOpeListen);
-	    boutonMult.addActionListener(_bOpeListen);
+	    buttonPlus.addActionListener(_bOpeListen);
+	    buttonSubs.addActionListener(_bOpeListen);
+	    buttonMult.addActionListener(_bOpeListen);
 	    buttonEqual.addActionListener(_bOpeListen);
+	    buttonDiv.addActionListener(_bOpeListen);
+	    buttonAC.addActionListener(_bOpeListen);;
 	    operator.add(buttonEqual);
-	    operator.add(boutonPlus);
-	    operator.add(boutonSubs);
-	    operator.add(boutonMult);
+	    operator.add(buttonPlus);
+	    operator.add(buttonSubs);
+	    operator.add(buttonMult);
+	    operator.add(buttonDiv);
+	    operator.add(buttonAC);
 	    
 	    _bNumListen = new boutonNumListener();
 	    bouton1.addActionListener(_bNumListen);
@@ -114,7 +121,7 @@ public class View extends JFrame implements Observer{
 	    numbers.add(bouton0);
 	    numbers.add(boutonComma);
 	    calculette.add(ecran, BorderLayout.NORTH);
-	    calculette.add(numbers, BorderLayout.CENTER);
+	    calculette.add(numbers, BorderLayout.WEST);
 	    calculette.add(operator,  BorderLayout.EAST);
 	    
 	    setContentPane(calculette);
