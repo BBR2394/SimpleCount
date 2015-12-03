@@ -4,17 +4,19 @@ import java.awt.event.ActionEvent;
 public class Controller {
 	View view = null;
 	Model model = null;
+	private boolean _endCalc = false;
 	private boolean _LastAction = false;
 	public Controller()
 	{
-		model = new Model(view);
-		view = new View(this, model);
-		model = new Model(view);
+		model = new Model();
+		view = new View(this);
 		model.addObserver(view);
 	}
 	
 	public void sendNumberToModel(String nb)
 	{
+		if (_endCalc == true)
+			model.resetCalc();
 		model.addNum(nb);
 		_LastAction = false;
 	}
@@ -23,7 +25,12 @@ public class Controller {
 	{
 		System.out.println("	-> je vais envoyer un ope a model");
 		System.out.println(ope);
-		if (_LastAction == false)
+		if (ope.equals("AC"))
+		{
+			model.resetCalc();
+			System.out.println("j'ai reinit");
+		}
+		else if (_LastAction == false)
 		{
 			if (ope == "+")
 				model.add();
@@ -33,23 +40,21 @@ public class Controller {
 				model.mult();
 			else if (ope == "/")
 				model.div();
-			else if (ope == "AC")
-			{
-				model.resetCalc();
-				System.out.println("j'ai fait");
-			}
+			else if (ope == "%")
+				model.modulo();
 			else if (ope == "=")
+			{
 				model.equal();
+				_endCalc = true;
+			}
 			_LastAction = true;
 		}
 	}
 	
-	/*
-	public class BoutonListener implements ActionListener{
-	    //Redéfinition de la méthode actionPerformed()
-	    public void actionPerformed(ActionEvent arg0) {
-	    	model.addNum("1");        
-	    }
-	  }
-	*/
+	public void sendAdvancedCalc(String ope)
+	{
+		System.out.println("	-> advanced calc !");
+		model.square();
+	}
+	
 }

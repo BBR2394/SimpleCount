@@ -26,16 +26,17 @@ import java.awt.GridBagConstraints;
 import java.awt.Dimension;
 
 public class View extends JFrame implements Observer{
-	private JPanel pan = new JPanel();
 	private JTextField textField;
 	private JPanel calculette = new JPanel();
 	private JPanel numbers = new JPanel();
 	private JPanel operator = new JPanel();
-	private JTextField ecran = new JTextField("&");
+	private JPanel calcAdvance = new JPanel();
+	private JTextField ecran = new JTextField(" ");
 	private Controller _ctrl = null;
 	private Model _model = null;
-	private boutonNumListener _bNumListen = null;
+	private boutonNumListener _bNumListen = new boutonNumListener();
 	private boutonOperator _bOpeListen = new boutonOperator();
+	private butonAdvCalcListener _bAdvCaListen = new butonAdvCalcListener();
 	JButton bouton1 = new JButton("1");
 	JButton bouton2 = new JButton("2");
 	JButton bouton3 = new JButton("3");
@@ -55,13 +56,15 @@ public class View extends JFrame implements Observer{
 	JButton buttonSubs = new JButton("-");
 	JButton buttonMult = new JButton("x");
 	JButton buttonDiv = new JButton("/");
+	JButton buttonMod = new JButton("%");
+	JButton buttonSquare = new JButton("x²");
 	
-	public View(Controller ctrl, Model mod)
+	public View(Controller ctrl)
 	{
 		_ctrl = ctrl;
-		_model = mod;
+		
 		this.setTitle("bonjour");
-		this.setSize(250, 350);
+		this.setSize(250, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setResizable(false);
@@ -72,15 +75,6 @@ public class View extends JFrame implements Observer{
 	    //On prévient notre JFrame que notre JPanel sera son content pane
 	    //this.setContentPane();
 	    
-	    //numbers.setPreferredSize(new Dimension(100, 225));
-	    
-	    /*
-	    textField = new JTextField();
-	    textField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-	    textField.setEditable(false);
-	    textField.setColumns(10);
-	    */
-	    
 	    ecran.setPreferredSize(new Dimension(225, 25));
 	    numbers.setPreferredSize(new Dimension(150, 200));
 
@@ -89,15 +83,16 @@ public class View extends JFrame implements Observer{
 	    buttonMult.addActionListener(_bOpeListen);
 	    buttonEqual.addActionListener(_bOpeListen);
 	    buttonDiv.addActionListener(_bOpeListen);
-	    buttonAC.addActionListener(_bOpeListen);;
+	    buttonAC.addActionListener(_bOpeListen);
+	    buttonMod.addActionListener(_bOpeListen);
 	    operator.add(buttonEqual);
 	    operator.add(buttonPlus);
 	    operator.add(buttonSubs);
 	    operator.add(buttonMult);
 	    operator.add(buttonDiv);
+	    operator.add(buttonMod);
 	    operator.add(buttonAC);
 	    
-	    _bNumListen = new boutonNumListener();
 	    bouton1.addActionListener(_bNumListen);
 	    bouton2.addActionListener(_bNumListen);
 	    bouton3.addActionListener(_bNumListen);
@@ -120,9 +115,14 @@ public class View extends JFrame implements Observer{
 	    numbers.add(bouton9);
 	    numbers.add(bouton0);
 	    numbers.add(boutonComma);
+	    
+	    buttonSquare.addActionListener(_bAdvCaListen);
+	    calcAdvance.add(buttonSquare);
+	    
 	    calculette.add(ecran, BorderLayout.NORTH);
 	    calculette.add(numbers, BorderLayout.WEST);
 	    calculette.add(operator,  BorderLayout.EAST);
+	    calculette.add(calcAdvance, BorderLayout.SOUTH);
 	    
 	    setContentPane(calculette);
 	    setVisible(true);
@@ -148,11 +148,11 @@ public class View extends JFrame implements Observer{
 	@Override
 	public void update(Observable o, Object arg)
 	{
-		_model = (Model) o;
+		Model model = (Model) o;
 		
 		//weatherUpdate = (ObservableExample) observable;
 		//System.out.println("Weather Report Live. Its "+weatherUpdate.getWeather());
-		this.setScreen(_model.getToEval());
+		this.setScreen(model.getToEval());
 		System.out.println("il y a une MAJ de l'obj");
 	}
 	
@@ -175,5 +175,13 @@ public class View extends JFrame implements Observer{
 			_ctrl.sendOperator(ope);
 		}
 	}
-
+	public class butonAdvCalcListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent act)
+		{
+			String ope = ((JButton)act.getSource()).getText();
+			System.out.println("la !");
+			_ctrl.sendAdvancedCalc(ope);
+		}
+	}
 }
