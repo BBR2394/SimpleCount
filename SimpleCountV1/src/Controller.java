@@ -27,11 +27,13 @@ public class Controller {
 		System.out.println(ope);
 		if (ope.equals("AC"))
 		{
+			_endCalc = false;
 			model.resetCalc();
 			System.out.println("j'ai reinit");
 		}
 		else if (_LastAction == false)
 		{
+			_endCalc = false;
 			if (ope == "+")
 				model.add();
 			else if (ope == "-")
@@ -39,12 +41,27 @@ public class Controller {
 			else if (ope == "x")
 				model.mult();
 			else if (ope == "/")
-				model.div();
+			{
+				if (model.div() == false)
+				{
+					model.error();
+					System.out.println("division error");
+					_endCalc = true;
+				}
+			}
 			else if (ope == "%")
-				model.modulo();
+			{
+				if (model.modulo() == false)
+				{
+					model.error();
+					System.out.println("modulo error");
+					_endCalc = true;
+				}
+			}
 			else if (ope == "=")
 			{
-				model.equal();
+				if (model.equal() == false)
+					model.error();
 				_endCalc = true;
 			}
 			_LastAction = true;

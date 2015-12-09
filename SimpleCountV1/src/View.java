@@ -11,10 +11,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.GridLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -24,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import java.awt.GridBagConstraints;
 import java.awt.Dimension;
+import java.awt.Font;
 
 public class View extends JFrame implements Observer{
 	private JTextField textField;
@@ -32,22 +29,23 @@ public class View extends JFrame implements Observer{
 	private JPanel operator = new JPanel();
 	private JPanel calcAdvance = new JPanel();
 	private JTextField ecran = new JTextField(" ");
+	private Font font = new Font("SansSerif", Font.BOLD, 18);
 	private Controller _ctrl = null;
 	private Model _model = null;
-	private boutonNumListener _bNumListen = new boutonNumListener();
-	private boutonOperator _bOpeListen = new boutonOperator();
+	private buttonNumListener _bNumListen = new buttonNumListener();
+	private buttonOperator _bOpeListen = new buttonOperator();
 	private butonAdvCalcListener _bAdvCaListen = new butonAdvCalcListener();
-	JButton bouton1 = new JButton("1");
-	JButton bouton2 = new JButton("2");
-	JButton bouton3 = new JButton("3");
-	JButton bouton4 = new JButton("4");
-	JButton bouton5 = new JButton("5");
-	JButton bouton6 = new JButton("6");
-	JButton bouton7 = new JButton("7");
-	JButton bouton8 = new JButton("8");
-	JButton bouton9 = new JButton("9");
-	JButton bouton0 = new JButton("0");
-	JButton boutonComma = new JButton(",");
+	JButton button1 = new JButton("1");
+	JButton button2 = new JButton("2");
+	JButton button3 = new JButton("3");
+	JButton button4 = new JButton("4");
+	JButton button5 = new JButton("5");
+	JButton button6 = new JButton("6");
+	JButton button7 = new JButton("7");
+	JButton button8 = new JButton("8");
+	JButton button9 = new JButton("9");
+	JButton button0 = new JButton("0");
+	JButton buttonComma = new JButton(",");
 	//OperatorAction opAct = new OperatorAction();
 	JButton buttonAC = new JButton("AC");
 	JButton buttonC = new JButton("C");
@@ -57,27 +55,29 @@ public class View extends JFrame implements Observer{
 	JButton buttonMult = new JButton("x");
 	JButton buttonDiv = new JButton("/");
 	JButton buttonMod = new JButton("%");
-	JButton buttonSquare = new JButton("x²");
+	JButton buttonSquare = new JButton("xï¿½");
 	
 	public View(Controller ctrl)
 	{
 		_ctrl = ctrl;
 		
 		this.setTitle("bonjour");
-		this.setSize(250, 400);
+		this.setSize(300, 275);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setResizable(false);
 	    ecran.setEditable(false);
+	    ecran.setFont(font);
 	    ecran.setHorizontalAlignment(SwingConstants.RIGHT);
 	    
-	    calculette.setBackground(Color.ORANGE);        
-	    //On prévient notre JFrame que notre JPanel sera son content pane
+	    //calculette.setBackground(Color.ORANGE);        
+	    //On prï¿½vient notre JFrame que notre JPanel sera son content pane
 	    //this.setContentPane();
 	    
-	    ecran.setPreferredSize(new Dimension(225, 25));
-	    numbers.setPreferredSize(new Dimension(150, 200));
-
+	    ecran.setPreferredSize(new Dimension(225, 30));
+	    numbers.setPreferredSize(new Dimension(150, 125));
+	    operator.setPreferredSize(new Dimension(100, 125));
+	    
 	    buttonPlus.addActionListener(_bOpeListen);
 	    buttonSubs.addActionListener(_bOpeListen);
 	    buttonMult.addActionListener(_bOpeListen);
@@ -93,28 +93,28 @@ public class View extends JFrame implements Observer{
 	    operator.add(buttonMod);
 	    operator.add(buttonAC);
 	    
-	    bouton1.addActionListener(_bNumListen);
-	    bouton2.addActionListener(_bNumListen);
-	    bouton3.addActionListener(_bNumListen);
-	    bouton4.addActionListener(_bNumListen);
-	    bouton5.addActionListener(_bNumListen);
-	    bouton6.addActionListener(_bNumListen);
-	    bouton7.addActionListener(_bNumListen);
-	    bouton8.addActionListener(_bNumListen);
-	    bouton9.addActionListener(_bNumListen);
-	    bouton0.addActionListener(_bNumListen);
-	    boutonComma.addActionListener(_bNumListen);
-	    numbers.add(bouton1);
-	    numbers.add(bouton2);
-	    numbers.add(bouton3);
-	    numbers.add(bouton4);
-	    numbers.add(bouton5);
-	    numbers.add(bouton6);
-	    numbers.add(bouton7);
-	    numbers.add(bouton8);
-	    numbers.add(bouton9);
-	    numbers.add(bouton0);
-	    numbers.add(boutonComma);
+	    button1.addActionListener(_bNumListen);
+	    button2.addActionListener(_bNumListen);
+	    button3.addActionListener(_bNumListen);
+	    button4.addActionListener(_bNumListen);
+	    button5.addActionListener(_bNumListen);
+	    button6.addActionListener(_bNumListen);
+	    button7.addActionListener(_bNumListen);
+	    button8.addActionListener(_bNumListen);
+	    button9.addActionListener(_bNumListen);
+	    button0.addActionListener(_bNumListen);
+	    buttonComma.addActionListener(_bNumListen);
+	    numbers.add(button1);
+	    numbers.add(button2);
+	    numbers.add(button3);
+	    numbers.add(button4);
+	    numbers.add(button5);
+	    numbers.add(button6);
+	    numbers.add(button7);
+	    numbers.add(button8);
+	    numbers.add(button9);
+	    numbers.add(button0);
+	    numbers.add(buttonComma);
 	    
 	    buttonSquare.addActionListener(_bAdvCaListen);
 	    calcAdvance.add(buttonSquare);
@@ -156,7 +156,7 @@ public class View extends JFrame implements Observer{
 		System.out.println("il y a une MAJ de l'obj");
 	}
 	
-	public class boutonNumListener implements ActionListener
+	public class buttonNumListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent act)
 		{
@@ -166,7 +166,7 @@ public class View extends JFrame implements Observer{
 		}
 	}
 	
-	public class boutonOperator implements ActionListener
+	public class buttonOperator implements ActionListener
 	{
 		public void actionPerformed(ActionEvent act)
 		{

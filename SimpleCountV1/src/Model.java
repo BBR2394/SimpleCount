@@ -4,6 +4,7 @@ import java.util.Observable;
 public class Model extends Observable {
 	private boolean dynCalc;
 	private double res = 0;
+	private double precRes = 0;
 	private boolean _comma;
 	private String toEval = " ";
 
@@ -146,6 +147,14 @@ public class Model extends Observable {
 		return true;
 	}
 	
+	private boolean checkIsZero(Double nb)
+	{
+		if (nb == 0)
+			return true;
+		else 
+			return false;
+	}
+	
 	public boolean div()
 	{
 		if (res == 0)
@@ -158,6 +167,8 @@ public class Model extends Observable {
 		}
 		else if (res != 0 && _dynamicCalc == true)
 		{
+			if (checkIsZero(Double.parseDouble(toEval.substring(toEval.lastIndexOf(_lastOpe) + 1))) == true)
+				return false;
 			res /= Double.parseDouble(toEval.substring(toEval.lastIndexOf(_lastOpe) + 1));
 			System.out.println("le resultat");
 			System.out.println(res);
@@ -183,6 +194,8 @@ public class Model extends Observable {
 		}
 		else if (res != 0 && _dynamicCalc == true)
 		{
+			if (checkIsZero(Double.parseDouble(toEval.substring(toEval.lastIndexOf(_lastOpe) + 1))) == true)
+				return false;
 			res %= Double.parseDouble(toEval.substring(toEval.lastIndexOf(_lastOpe) + 1));
 			System.out.println("le resultat");
 			System.out.println(res);
@@ -194,6 +207,13 @@ public class Model extends Observable {
 			setEvaluator(toEval);
 		}
 		return true;
+	}
+	
+	public boolean error()
+	{
+		setEvaluator("Err.");
+		_lastOpe = "=";
+		return true;	
 	}
 	
 	public boolean square()
@@ -210,6 +230,7 @@ public class Model extends Observable {
 	
 	public boolean equal()
 	{
+		boolean rtr = true;
 		if (_lastOpe == "+")
 			this.add();
 		else if (_lastOpe == "-")
@@ -217,13 +238,19 @@ public class Model extends Observable {
 		else if (_lastOpe == "*")
 			this.mult();
 		else if (_lastOpe == "/")
-			this.div();
+			rtr = this.div();
 		else if (_lastOpe == "%")
-			this.modulo();
+			rtr = this.modulo();
 		_lastOpe = "=";
-		setEvaluator(Double.toString(res));
 		printData();
-		return false;	
+		if (rtr != false)
+		{
+			setEvaluator(Double.toString(res));
+			precRes = res;
+		}
+		else
+			return false;
+		return true;	
 	}
 	
 	public boolean addNum(String num)
@@ -231,7 +258,10 @@ public class Model extends Observable {
 		if (toEval == " " && (num == "0" || num == ","))
 			return true;
 		else if (toEval == " ")
+		{
 			toEval = num;
+			precRes = 0;
+		}
 		else if (num == "," && _comma != true)
 		{
 			_comma = true;
