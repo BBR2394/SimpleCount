@@ -21,10 +21,12 @@ public class Controller {
 		_LastAction = false;
 	}
 	
-	public void sendOperator(String ope)
+	public boolean sendOperator(String ope)
 	{
 		System.out.println("	-> je vais envoyer un ope a model");
 		System.out.println(ope);
+		if (model.recycle(ope) == true)
+			_LastAction = false;
 		if (ope.equals("AC"))
 		{
 			_endCalc = false;
@@ -33,6 +35,7 @@ public class Controller {
 		}
 		else if (_LastAction == false)
 		{
+			System.out.println(" -> un operateur");
 			_endCalc = false;
 			if (ope == "+")
 				model.add();
@@ -63,9 +66,12 @@ public class Controller {
 				if (model.equal() == false)
 					model.error();
 				_endCalc = true;
+				return true;
 			}
 			_LastAction = true;
+			return true;
 		}
+		return true;
 	}
 	
 	public void sendAdvancedCalc(String ope)

@@ -7,6 +7,7 @@ public class Model extends Observable {
 	private double precRes = 0;
 	private boolean _comma;
 	private String toEval = " ";
+	private boolean firstcalc = true;
 
 	private boolean _dynamicCalc = true;
 	private String _lastOpe = "";
@@ -76,6 +77,7 @@ public class Model extends Observable {
 	{
 		if (res == 0)
 		{
+			System.out.println("un premier plus");
 			res = Double.parseDouble(toEval);
 			toEval += "+";
 			_lastOpe = "+";
@@ -84,6 +86,7 @@ public class Model extends Observable {
 		}
 		else if (res != 0 && _dynamicCalc == true)
 		{
+			System.out.println("dans le deuxieme plus " + toEval);
 			res += Double.parseDouble(toEval.substring(toEval.lastIndexOf(_lastOpe) + 1));
 			System.out.println("le resultat");
 			System.out.println(res);
@@ -250,7 +253,25 @@ public class Model extends Observable {
 		}
 		else
 			return false;
+		firstcalc = false;
 		return true;	
+	}
+	
+	public boolean recycle(String ope)
+	{
+		if (firstcalc != true && precRes == res)
+		{
+			_comma = false;
+			//_lastOpe = ope;
+			res = 0;
+			//toEval  = Double.toString(precRes);
+			setEvaluator(Double.toString(precRes));
+			printData();
+			System.out.println("Ce putain de toEval  " + toEval);
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	public boolean addNum(String num)

@@ -55,7 +55,14 @@ public class View extends JFrame implements Observer{
 	JButton buttonMult = new JButton("x");
 	JButton buttonDiv = new JButton("/");
 	JButton buttonMod = new JButton("%");
-	JButton buttonSquare = new JButton("x�");
+	JButton buttonSquare = new JButton("x²");
+	
+	/*
+	 * grand changement a faire !
+	 * entre le controller et la view
+	 * la view ne prend plus de controller et
+	 * c'est le controller qui est observer
+	 */
 	
 	public View(Controller ctrl)
 	{
@@ -161,7 +168,7 @@ public class View extends JFrame implements Observer{
 		public void actionPerformed(ActionEvent act)
 		{
 			String num = ((JButton)act.getSource()).getText();
-			System.out.println("Ici !");
+			System.out.println("Ici view !");
 			_ctrl.sendNumberToModel(num);
 		}
 	}
