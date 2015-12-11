@@ -75,15 +75,11 @@ public class Model extends Observable {
 		_lastOpe = "";
 		_comma = false;
 		_toEval = " ";
+		_negative = false;
 		setEvaluator(" ");
 		return true;
 	}
 	
-	private boolean doTheCalc(String ope)
-	{
-		
-		return true;
-	}
 	
 	public boolean calc(String ope)
 	{
@@ -151,7 +147,7 @@ public class Model extends Observable {
 		_lastOpe = "=";
 		return true;	
 	}
-	
+	/*
 	public boolean square()
 	{
 		System.out.println("dans carré");
@@ -201,7 +197,7 @@ public class Model extends Observable {
 		}
 		return true;
 	}
-	
+	*/
 	private boolean makeAdvancedCalc(String ope)
 	{
 		switch (ope)
@@ -306,6 +302,8 @@ public class Model extends Observable {
 	
 	public boolean putInNegativ()
 	{
+		String subString;
+		
 		System.out.println("dans met en negatif ");
 		if (_lastOpe == "")
 		{
@@ -325,15 +323,40 @@ public class Model extends Observable {
 		{
 			if (_lastOpe == "-")
 			{
-			
+				subString  = _toEval.substring(0, _toEval.lastIndexOf("-"));
+				_lastOpe = "+";
+				subString += "+";
+				subString += _toEval.substring(_toEval.lastIndexOf("-")+1);
+				setEvaluator(subString);
+				System.out.println("ICICI  " + subString);
+				
 			}
 			else if (_lastOpe == "+")
 			{
-				
+				subString  = _toEval.substring(0, _toEval.lastIndexOf("+"));
+				_lastOpe = "-";
+				subString += "-";
+				subString += _toEval.substring(_toEval.lastIndexOf("+")+1);
+				setEvaluator(subString);
+				System.out.println("ICICI  " + subString);
 			}
 			else
 			{
-			
+				subString  = _toEval.substring(0, _toEval.lastIndexOf(_lastOpe)+1);
+				if (_negative == false)
+				{
+					subString += "-";
+					System.out.println("ICICI  " + subString);
+					subString += _toEval.substring(_toEval.lastIndexOf(_lastOpe)+1);
+					_negative = true;
+				}
+				else
+				{
+					subString += _toEval.substring(_toEval.lastIndexOf(_lastOpe)+2);
+					_negative = false;
+				}
+				setEvaluator(subString);
+				System.out.println("ICICI  " + subString);
 			}
 		}
 		return true;
