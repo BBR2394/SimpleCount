@@ -21,15 +21,15 @@ import javax.swing.JSplitPane;
 import java.awt.GridBagConstraints;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 
-public class View extends JFrame implements Observer{
+public class View extends JFrame {
 	private JTextField textField;
 	private JPanel calculette = new JPanel();
 	private JPanel numbers = new JPanel();
 	private JPanel operator = new JPanel();
 	private JPanel calcAdvance = new JPanel();
 	private JTextField ecran = new JTextField(" ");
-	private Font font = new Font("SansSerif", Font.BOLD, 18);
 	private Controller _ctrl = null;
 	private Model _model = null;
 	private buttonNumListener _bNumListen = new buttonNumListener();
@@ -46,7 +46,6 @@ public class View extends JFrame implements Observer{
 	JButton button9 = new JButton("9");
 	JButton button0 = new JButton("0");
 	JButton buttonComma = new JButton(",");
-	//OperatorAction opAct = new OperatorAction();
 	JButton buttonAC = new JButton("AC");
 	JButton buttonC = new JButton("C");
 	JButton buttonEqual = new JButton("="); 
@@ -56,17 +55,26 @@ public class View extends JFrame implements Observer{
 	JButton buttonDiv = new JButton("/");
 	JButton buttonMod = new JButton("%");
 	JButton buttonSquare = new JButton("x²");
-	
+	JButton buttonSquareRoot = new JButton("root");
+	JButton buttonInvertSign = new JButton("-x");
+	JButton buttonCosinus = new JButton("cos");
+	JButton buttonSinus = new JButton("sin");
+	JButton buttonTangente = new JButton("tan");
+	JButton buttonLogNeper = new JButton("ln");
+	JButton buttonExponentiel = new JButton("e");
 	/*
 	 * grand changement a faire !
 	 * entre le controller et la view
 	 * la view ne prend plus de controller et
 	 * c'est le controller qui est observer
+	 * 		-> c'est bon c'est fait :-)
+	 * 		-> euu pour le faite que la vue prenne un controller :  a reflechir 
 	 */
 	
 	public View(Controller ctrl)
 	{
 		_ctrl = ctrl;
+		Font font = new Font("SansSerif", Font.BOLD, 18);
 		
 		this.setTitle("bonjour");
 		this.setSize(300, 275);
@@ -84,6 +92,7 @@ public class View extends JFrame implements Observer{
 	    ecran.setPreferredSize(new Dimension(225, 30));
 	    numbers.setPreferredSize(new Dimension(150, 125));
 	    operator.setPreferredSize(new Dimension(100, 125));
+	    calcAdvance.setPreferredSize(new Dimension(250, 100));
 	    
 	    buttonPlus.addActionListener(_bOpeListen);
 	    buttonSubs.addActionListener(_bOpeListen);
@@ -110,7 +119,9 @@ public class View extends JFrame implements Observer{
 	    button8.addActionListener(_bNumListen);
 	    button9.addActionListener(_bNumListen);
 	    button0.addActionListener(_bNumListen);
+	    buttonInvertSign.addActionListener(_bNumListen);;
 	    buttonComma.addActionListener(_bNumListen);
+	    button1.setMnemonic(KeyEvent.VK_1);
 	    numbers.add(button1);
 	    numbers.add(button2);
 	    numbers.add(button3);
@@ -122,9 +133,31 @@ public class View extends JFrame implements Observer{
 	    numbers.add(button9);
 	    numbers.add(button0);
 	    numbers.add(buttonComma);
+	    numbers.add(buttonInvertSign);
+	    
+	    /*
+	     * JButton buttonCosinus = new JButton("cos");
+	JButton buttonSinus = new JButton("sin");
+	JButton buttonTangente = new JButton("tan");
+	JButton buttonLogNeper = new JButton("ln");
+	JButton buttonExponentiel = new JButton("e");
+	     */
 	    
 	    buttonSquare.addActionListener(_bAdvCaListen);
-	    calcAdvance.add(buttonSquare);
+	    buttonSquareRoot.addActionListener(_bAdvCaListen);
+	    buttonCosinus.addActionListener(_bAdvCaListen);
+	    buttonSinus.addActionListener(_bAdvCaListen);
+	    buttonTangente.addActionListener(_bAdvCaListen);
+	    buttonLogNeper.addActionListener(_bAdvCaListen);
+	    buttonExponentiel.addActionListener(_bAdvCaListen);
+	    calcAdvance.add(buttonSquareRoot);
+	    calcAdvance.add(buttonSquare);	   
+	    calcAdvance.add(buttonLogNeper);
+	    calcAdvance.add(buttonExponentiel);
+	    calcAdvance.add(buttonCosinus);
+	    calcAdvance.add(buttonSinus);
+	    calcAdvance.add(buttonTangente);
+
 	    
 	    calculette.add(ecran, BorderLayout.NORTH);
 	    calculette.add(numbers, BorderLayout.WEST);
@@ -144,6 +177,28 @@ public class View extends JFrame implements Observer{
 	
 	public void setScreen(String str)
 	{
+		System.out.println("dans set string " + str.length());
+		
+		if (str.length() < 18)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 18);
+			ecran.setFont(f);
+		}
+		else if (str.length() >= 18 && str.length() < 23)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 15);
+			ecran.setFont(f);
+		}
+		else if (str.length() >= 23 && str.length() < 29)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 12);
+			ecran.setFont(f);
+		}
+		else if (str.length() >= 29)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 9);
+			ecran.setFont(f);
+		}
 		ecran.setText(str);
 	}
 
@@ -152,7 +207,7 @@ public class View extends JFrame implements Observer{
 		//ici je vais mettre tout ce que j'ai mis plus haut
 	}
 	
-	@Override
+	/*@Override
 	public void update(Observable o, Object arg)
 	{
 		Model model = (Model) o;
@@ -161,7 +216,7 @@ public class View extends JFrame implements Observer{
 		//System.out.println("Weather Report Live. Its "+weatherUpdate.getWeather());
 		this.setScreen(model.getToEval());
 		System.out.println("il y a une MAJ de l'obj");
-	}
+	}*/
 	
 	public class buttonNumListener implements ActionListener
 	{
