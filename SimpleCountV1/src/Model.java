@@ -3,75 +3,30 @@ import java.util.Observable;
 import java.text.DecimalFormat;
 
 public class Model extends Observable {
-	private boolean 	dynCalc;
-	private double 		res = 0;
-	private double 		precRes = 0;
-	private boolean		_comma;
+	private double 		_res = 0;
+	private double 		_presRes = 0;
+	private boolean		_comma = false;
 	private String 		_toEval = " ";
-	private boolean 	endCalc = true;
+	private boolean 	_endCalc = true;
 	private boolean 	_dynamicCalc = true;
 	private String 		_lastOpe = "";
 	private boolean		_negative = false;
 	private DecimalFormat _format  = new DecimalFormat("0.########");
-	/* a supprimer avant la fin du projet */
-	void printData()
-	{
-		System.out.println("to eval et le resultata sont egaux a ");
-		System.out.println(_toEval);
-		System.out.println(res);
-		System.out.println(precRes);
-	}
 	
 	private void setEvaluator(String newEval)
 	{
-		String[] temp = newEval.split(".");
-		//System.out.println(temp[0]);
-		if (_lastOpe == "=")
-		{
-			//System.out.println("new Eval apres =");
-			//System.out.println(newEval);
-			//System.out.println(temp[0]);
-			//System.out.println(temp[1]);
-			_toEval = newEval;
-			/*
-			if (haveItDecimal())
-				_toEval = newEval;
-			else
-				_toEval = temp[0];
-				*/
-		}
-		else
-			_toEval = newEval;
-		
-		//String format = decimalFormat.format(123456789.123);
-		//System.out.println(format);
-		
-		printData();
+		_toEval = newEval;
 		setChanged();
         notifyObservers();
 	}
 	
-	private boolean haveItDecimal()
-	{
-		String temp = _toEval.substring(_toEval.lastIndexOf(".") + 1);
-		int deci;
-		
-		deci = Integer.parseInt(temp);
-		if (deci == 0)
-			return false;
-		else
-			return true;
-	}
-	
 	public Model()
 	{
-		dynCalc = true;
-		_comma = false;
 	}
 	
 	public boolean resetCalc()
 	{
-		res = 0;
+		_res = 0;
 		_lastOpe = "";
 		_comma = false;
 		_toEval = " ";
@@ -83,53 +38,45 @@ public class Model extends Observable {
 	
 	public boolean calc(String ope)
 	{
-		if (res == 0)
+		if (_res == 0)
 		{
-			System.out.println("un premier calc DANS CALC");
-			res = Double.parseDouble(_toEval);
+			_res = Double.parseDouble(_toEval);
 			_toEval += ope;
 			_lastOpe = ope;
 			_comma = false;
 			setEvaluator(_toEval);
 		}
-		else if (res != 0 && _dynamicCalc == true)
+		else if (_res != 0 && _dynamicCalc == true)
 		{
-			
-			System.out.println("dans le deuxieme plus DANS CALC" + _toEval);
-			/*res += Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
-			veuillez insérer un switch ici
-			*/
 			switch(_lastOpe)
 			{
-			case "+" : System.out.println("++ plus !! ++");
-				res += Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
+			case "+" : 
+				_res += Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
 			break;
 			case "-" :
-				res -= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
+				_res -= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
 				break;
 			case "*":
-				res *= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
+				_res *= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
 				break;
 			case "/":
 				if (checkIsZero(Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1))) == true)
 					return false;
-				res /= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
+				_res /= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
 				break;
 			case "%":
 				if (checkIsZero(Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1))) == true)
 					return false;
-				res %= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
+				_res %= Double.parseDouble(_toEval.substring(_toEval.lastIndexOf(_lastOpe) + 1));
 				break;
 			default :  System.out.println("probleme avec le switch");
 			break;
 			}
-			System.out.println("le resultat dans calc ");
-			System.out.println(res);
 			_comma = false;
 			_lastOpe = ope;
-			setEvaluator(_format.format(res) + ope);
+			setEvaluator(_format.format(_res) + ope);
 		}
-		endCalc = false;
+		_endCalc = false;
 		return true;
 	}
 	
@@ -147,81 +94,31 @@ public class Model extends Observable {
 		_lastOpe = "=";
 		return true;	
 	}
-	/*
-	public boolean square()
-	{
-		System.out.println("dans carré");
-		if (_lastOpe == "")
-		{
-			res = Double.parseDouble(_toEval);
-			res *= res;
-			precRes = res;
-			System.out.println("je vais faire un carré");
-			setEvaluator(_format.format(res));
-			equal();
-		}
-		else
-		{
-			equal();
-			res = Double.parseDouble(_toEval);
-			res *= res;
-			precRes = res;
-			System.out.println("je vais faire un carré");
-			setEvaluator(_format.format(res));
-			equal();
-		}
-		return true;
-	}
 	
-	public boolean squareRoot()
-	{
-		System.out.println("dans racine carré");
-		if (_lastOpe == "")
-		{
-			res = Double.parseDouble(_toEval);
-			res  = Math.sqrt(res);
-			precRes = res;
-			System.out.println("je vais faire une racine carré");
-			setEvaluator(_format.format(res));
-			equal();
-		}
-		else
-		{
-			equal();
-			res = Double.parseDouble(_toEval);
-			res  = Math.sqrt(res);
-			precRes = res;
-			System.out.println("je vais faire un carré");
-			setEvaluator(_format.format(res));
-			equal();
-		}
-		return true;
-	}
-	*/
 	private boolean makeAdvancedCalc(String ope)
 	{
 		switch (ope)
 		{
 		case "2":
-			res *= res;
+			_res *= _res;
 			break;
 		case "root":
-			res  = Math.sqrt(res);
+			_res  = Math.sqrt(_res);
 			break;
 		case "cos":
-			res = Math.cos(res);
+			_res = Math.cos(_res);
 			break;
 		case "sin":
-			res = Math.sin(res);
+			_res = Math.sin(_res);
 			break;
 		case "tan": 
-			res = Math.tan(res);
+			_res = Math.tan(_res);
 			break;
 		case "ln":
-			res = Math.log(res);
+			_res = Math.log(_res);
 			break;
 		case "e":
-			res = Math.exp(res);
+			_res = Math.exp(_res);
 			break;
 		default	:
 			return false;
@@ -231,26 +128,23 @@ public class Model extends Observable {
 	
 	public boolean advanceCalc(String ope)
 	{
-		System.out.println("dans advance calc");
 		if (_toEval == " ")
 			return true;
 		if (_lastOpe == "")
 		{
-			res = Double.parseDouble(_toEval);
+			_res = Double.parseDouble(_toEval);
 			makeAdvancedCalc(ope);
-			precRes = res;
-			System.out.println("je vais faire une racine carré");
-			setEvaluator(_format.format(res));
+			_presRes = _res;
+			setEvaluator(_format.format(_res));
 			equal();
 		}
 		else
 		{
 			equal();
-			res = Double.parseDouble(_toEval);
+			_res = Double.parseDouble(_toEval);
 			makeAdvancedCalc(ope);
-			precRes = res;
-			System.out.println("je vais faire un carré");
-			setEvaluator(_format.format(res));
+			_presRes = _res;
+			setEvaluator(_format.format(_res));
 			equal();
 		}
 		return true;
@@ -258,7 +152,7 @@ public class Model extends Observable {
 	
 	public boolean equal()
 	{
-		if (endCalc == true)
+		if (_endCalc == true)
 			return true;
 		boolean rtr = true;
 		if (_lastOpe == "+")
@@ -272,28 +166,23 @@ public class Model extends Observable {
 		else if (_lastOpe == "%")
 			rtr = this.calc("%");
 		_lastOpe = "=";
-		//printData();
 		if (rtr != false)
 		{
-			setEvaluator(_format.format(res));
-			precRes = res;
+			setEvaluator(_format.format(_res));
+			_presRes = _res;
 		}
 		else
 			return false;
-		endCalc = true;
-		printData();
+		_endCalc = true;
 		return true;	
 	}
 	
 	public boolean numberAns(String ope)
 	{
-		System.out.println("dans number Ans");
-		if (endCalc == true)
+		if (_endCalc == true)
 		{
 			resetCalc();
-			this.addNum(Double.toString(precRes));
-			printData();
-			System.out.println("Ce putain de _toEval  " + _toEval);
+			this.addNum(Double.toString(_presRes));
 			return true;
 		}
 		else
@@ -304,7 +193,6 @@ public class Model extends Observable {
 	{
 		String subString;
 		
-		System.out.println("dans met en negatif ");
 		if (_lastOpe == "")
 		{
 			if(_negative == true && _lastOpe == "")
@@ -327,9 +215,7 @@ public class Model extends Observable {
 				_lastOpe = "+";
 				subString += "+";
 				subString += _toEval.substring(_toEval.lastIndexOf("-")+1);
-				setEvaluator(subString);
-				System.out.println("ICICI  " + subString);
-				
+				setEvaluator(subString);				
 			}
 			else if (_lastOpe == "+")
 			{
@@ -338,7 +224,6 @@ public class Model extends Observable {
 				subString += "-";
 				subString += _toEval.substring(_toEval.lastIndexOf("+")+1);
 				setEvaluator(subString);
-				System.out.println("ICICI  " + subString);
 			}
 			else
 			{
@@ -346,7 +231,6 @@ public class Model extends Observable {
 				if (_negative == false)
 				{
 					subString += "-";
-					System.out.println("ICICI  " + subString);
 					subString += _toEval.substring(_toEval.lastIndexOf(_lastOpe)+1);
 					_negative = true;
 				}
@@ -356,7 +240,6 @@ public class Model extends Observable {
 					_negative = false;
 				}
 				setEvaluator(subString);
-				System.out.println("ICICI  " + subString);
 			}
 		}
 		return true;
@@ -364,7 +247,6 @@ public class Model extends Observable {
 	
 	public boolean addNum(String num)
 	{
-		System.out.println("au debut du add num   " + num + _comma + "|" + _toEval + "|");
 		if (_toEval == "0" && num == "0")
 			return true;
 		else if (_toEval == " " && num == ",")
@@ -381,8 +263,6 @@ public class Model extends Observable {
 		if (num == "-x")
 			putInNegativ();
 		setEvaluator(_toEval);
-		System.out.println("a la fin du addnum  "+_toEval);
-		System.out.println(num);
 		return true;
 	}
 	

@@ -31,49 +31,70 @@ public class View extends JFrame {
 	private JPanel calcAdvance = new JPanel();
 	private JTextField ecran = new JTextField(" ");
 	private Controller _ctrl = null;
-	private Model _model = null;
 	private buttonNumListener _bNumListen = new buttonNumListener();
 	private buttonOperator _bOpeListen = new buttonOperator();
 	private butonAdvCalcListener _bAdvCaListen = new butonAdvCalcListener();
-	JButton button1 = new JButton("1");
-	JButton button2 = new JButton("2");
-	JButton button3 = new JButton("3");
-	JButton button4 = new JButton("4");
-	JButton button5 = new JButton("5");
-	JButton button6 = new JButton("6");
-	JButton button7 = new JButton("7");
-	JButton button8 = new JButton("8");
-	JButton button9 = new JButton("9");
-	JButton button0 = new JButton("0");
-	JButton buttonComma = new JButton(",");
-	JButton buttonAC = new JButton("AC");
-	JButton buttonC = new JButton("C");
-	JButton buttonEqual = new JButton("="); 
-	JButton buttonPlus = new JButton("+");
-	JButton buttonSubs = new JButton("-");
-	JButton buttonMult = new JButton("x");
-	JButton buttonDiv = new JButton("/");
-	JButton buttonMod = new JButton("%");
-	JButton buttonSquare = new JButton("x²");
-	JButton buttonSquareRoot = new JButton("root");
-	JButton buttonInvertSign = new JButton("-x");
-	JButton buttonCosinus = new JButton("cos");
-	JButton buttonSinus = new JButton("sin");
-	JButton buttonTangente = new JButton("tan");
-	JButton buttonLogNeper = new JButton("ln");
-	JButton buttonExponentiel = new JButton("e");
-	/*
-	 * grand changement a faire !
-	 * entre le controller et la view
-	 * la view ne prend plus de controller et
-	 * c'est le controller qui est observer
-	 * 		-> c'est bon c'est fait :-)
-	 * 		-> euu pour le faite que la vue prenne un controller :  a reflechir 
-	 */
+	private JButton button1 = new JButton("1");
+	private JButton button2 = new JButton("2");
+	private JButton button3 = new JButton("3");
+	private JButton button4 = new JButton("4");
+	private JButton button5 = new JButton("5");
+	private JButton button6 = new JButton("6");
+	private JButton button7 = new JButton("7");
+	private JButton button8 = new JButton("8");
+	private JButton button9 = new JButton("9");
+	private JButton button0 = new JButton("0");
+	private JButton buttonComma = new JButton(",");
+	private JButton buttonAC = new JButton("AC");
+	//private JButton buttonC = new JButton("C");
+	private JButton buttonEqual = new JButton("="); 
+	private JButton buttonPlus = new JButton("+");
+	private JButton buttonSubs = new JButton("-");
+	private JButton buttonMult = new JButton("x");
+	private JButton buttonDiv = new JButton("/");
+	private JButton buttonMod = new JButton("%");
+	private JButton buttonSquare = new JButton("x²");
+	private JButton buttonSquareRoot = new JButton("root");
+	private JButton buttonInvertSign = new JButton("-x");
+	private JButton buttonCosinus = new JButton("cos");
+	private JButton buttonSinus = new JButton("sin");
+	private JButton buttonTangente = new JButton("tan");
+	private JButton buttonLogNeper = new JButton("ln");
+	private JButton buttonExponentiel = new JButton("e");
 	
 	public View(Controller ctrl)
 	{
 		_ctrl = ctrl;
+		initWindow();
+	}
+	
+	public void setScreen(String str)
+	{
+		if (str.length() < 18)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 18);
+			ecran.setFont(f);
+		}
+		else if (str.length() >= 18 && str.length() < 23)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 15);
+			ecran.setFont(f);
+		}
+		else if (str.length() >= 23 && str.length() < 29)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 12);
+			ecran.setFont(f);
+		}
+		else if (str.length() >= 29)
+		{
+			Font f = new Font("SansSerif", Font.BOLD, 9);
+			ecran.setFont(f);
+		}
+		ecran.setText(str);
+	}
+
+	public void initWindow()
+	{		
 		Font font = new Font("SansSerif", Font.BOLD, 18);
 		
 		this.setTitle("bonjour");
@@ -84,11 +105,7 @@ public class View extends JFrame {
 	    ecran.setEditable(false);
 	    ecran.setFont(font);
 	    ecran.setHorizontalAlignment(SwingConstants.RIGHT);
-	    
-	    //calculette.setBackground(Color.ORANGE);        
-	    //On pr�vient notre JFrame que notre JPanel sera son content pane
-	    //this.setContentPane();
-	    
+	    	    
 	    ecran.setPreferredSize(new Dimension(225, 30));
 	    numbers.setPreferredSize(new Dimension(150, 125));
 	    operator.setPreferredSize(new Dimension(100, 125));
@@ -135,14 +152,6 @@ public class View extends JFrame {
 	    numbers.add(buttonComma);
 	    numbers.add(buttonInvertSign);
 	    
-	    /*
-	     * JButton buttonCosinus = new JButton("cos");
-	JButton buttonSinus = new JButton("sin");
-	JButton buttonTangente = new JButton("tan");
-	JButton buttonLogNeper = new JButton("ln");
-	JButton buttonExponentiel = new JButton("e");
-	     */
-	    
 	    buttonSquare.addActionListener(_bAdvCaListen);
 	    buttonSquareRoot.addActionListener(_bAdvCaListen);
 	    buttonCosinus.addActionListener(_bAdvCaListen);
@@ -158,7 +167,6 @@ public class View extends JFrame {
 	    calcAdvance.add(buttonSinus);
 	    calcAdvance.add(buttonTangente);
 
-	    
 	    calculette.add(ecran, BorderLayout.NORTH);
 	    calculette.add(numbers, BorderLayout.WEST);
 	    calculette.add(operator,  BorderLayout.EAST);
@@ -168,62 +176,12 @@ public class View extends JFrame {
 	    setVisible(true);
 	}
 	
-	class OperatorAction implements ActionListener{
-		public void actionPerformed(ActionEvent act)
-		{
-			System.out.println("dans Action operateur");
-		}
-	}
-	
-	public void setScreen(String str)
-	{
-		System.out.println("dans set string " + str.length());
-		
-		if (str.length() < 18)
-		{
-			Font f = new Font("SansSerif", Font.BOLD, 18);
-			ecran.setFont(f);
-		}
-		else if (str.length() >= 18 && str.length() < 23)
-		{
-			Font f = new Font("SansSerif", Font.BOLD, 15);
-			ecran.setFont(f);
-		}
-		else if (str.length() >= 23 && str.length() < 29)
-		{
-			Font f = new Font("SansSerif", Font.BOLD, 12);
-			ecran.setFont(f);
-		}
-		else if (str.length() >= 29)
-		{
-			Font f = new Font("SansSerif", Font.BOLD, 9);
-			ecran.setFont(f);
-		}
-		ecran.setText(str);
-	}
-
-	public void initWindow()
-	{		
-		//ici je vais mettre tout ce que j'ai mis plus haut
-	}
-	
-	/*@Override
-	public void update(Observable o, Object arg)
-	{
-		Model model = (Model) o;
-		
-		//weatherUpdate = (ObservableExample) observable;
-		//System.out.println("Weather Report Live. Its "+weatherUpdate.getWeather());
-		this.setScreen(model.getToEval());
-		System.out.println("il y a une MAJ de l'obj");
-	}*/
 	
 	public class buttonNumListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent act)
 		{
 			String num = ((JButton)act.getSource()).getText();
-			System.out.println("Ici view !");
 			_ctrl.sendNumberToModel(num);
 		}
 	}
@@ -233,16 +191,15 @@ public class View extends JFrame {
 		public void actionPerformed(ActionEvent act)
 		{
 			String ope = ((JButton)act.getSource()).getText();
-			System.out.println("la !");
 			_ctrl.sendOperator(ope);
 		}
 	}
+	
 	public class butonAdvCalcListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent act)
 		{
 			String ope = ((JButton)act.getSource()).getText();
-			System.out.println("la !");
 			_ctrl.sendAdvancedCalc(ope);
 		}
 	}
