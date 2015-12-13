@@ -24,12 +24,11 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 
 public class View extends JFrame {
-	private JTextField textField;
 	private JPanel calculette = new JPanel();
 	private JPanel numbers = new JPanel();
 	private JPanel operator = new JPanel();
 	private JPanel calcAdvance = new JPanel();
-	private JTextField ecran = new JTextField(" ");
+	private JTextField screen = new JTextField(" ");
 	private Controller _ctrl = null;
 	private buttonNumListener _bNumListen = new buttonNumListener();
 	private buttonOperator _bOpeListen = new buttonOperator();
@@ -73,24 +72,24 @@ public class View extends JFrame {
 		if (str.length() < 18)
 		{
 			Font f = new Font("SansSerif", Font.BOLD, 18);
-			ecran.setFont(f);
+			screen.setFont(f);
 		}
 		else if (str.length() >= 18 && str.length() < 23)
 		{
 			Font f = new Font("SansSerif", Font.BOLD, 15);
-			ecran.setFont(f);
+			screen.setFont(f);
 		}
 		else if (str.length() >= 23 && str.length() < 29)
 		{
 			Font f = new Font("SansSerif", Font.BOLD, 12);
-			ecran.setFont(f);
+			screen.setFont(f);
 		}
 		else if (str.length() >= 29)
 		{
 			Font f = new Font("SansSerif", Font.BOLD, 9);
-			ecran.setFont(f);
+			screen.setFont(f);
 		}
-		ecran.setText(str);
+		screen.setText(str);
 	}
 
 	public void initWindow()
@@ -102,11 +101,11 @@ public class View extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setResizable(false);
-	    ecran.setEditable(false);
-	    ecran.setFont(font);
-	    ecran.setHorizontalAlignment(SwingConstants.RIGHT);
+	    screen.setEditable(false);
+	    screen.setFont(font);
+	    screen.setHorizontalAlignment(SwingConstants.RIGHT);
 	    	    
-	    ecran.setPreferredSize(new Dimension(225, 30));
+	    screen.setPreferredSize(new Dimension(225, 30));
 	    numbers.setPreferredSize(new Dimension(150, 125));
 	    operator.setPreferredSize(new Dimension(100, 125));
 	    calcAdvance.setPreferredSize(new Dimension(250, 100));
@@ -167,7 +166,7 @@ public class View extends JFrame {
 	    calcAdvance.add(buttonSinus);
 	    calcAdvance.add(buttonTangente);
 
-	    calculette.add(ecran, BorderLayout.NORTH);
+	    calculette.add(screen, BorderLayout.NORTH);
 	    calculette.add(numbers, BorderLayout.WEST);
 	    calculette.add(operator,  BorderLayout.EAST);
 	    calculette.add(calcAdvance, BorderLayout.SOUTH);
