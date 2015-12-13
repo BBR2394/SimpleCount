@@ -1,0 +1,8 @@
+*-------------------------*
+| Simple Count bertra_l   |
+*-------------------------*
+
+//le design pattern
+----------------------
+	J'ai decidé d'utiliser un patern MVC, car celui ci permet
+	de separer le coeur du programme de l'interface-utilisateur
