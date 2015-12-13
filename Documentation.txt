@@ -5,4 +5,18 @@
 //le design pattern
 ----------------------
 	J'ai decidé d'utiliser un patern MVC, car celui ci permet
-	de separer le coeur du programme de l'interface-utilisateur
+	de séparer le coeur du programme de l'interface-utilisateur
+
+	-> l'objet View
+	   C'est toute l'interface, il contient tous les éléments de
+	   l'interface utilisateur comme les JPanel, et les JButton
+
+	-> l'objet Controller
+	   Il fait le liens entre la vue et le model et envoie les données
+	   adéquat au model selon ce qu'envoie la View
+
+	-> l'objet Model
+	   C'est la calculatrice en elle meme, c'est elle qui fait les calculs
+	   et qui les envoie au controller qui ensuite, affiche le resultat
+	   sur l'interface par le biais de la View
+	   
