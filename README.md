@@ -9,4 +9,4 @@ The goal was to create a simple calculator in Java, it was the first project of 
   
 The project was coded and tested on Eclipse IDE.
 
-![alt text](https://raw.githubusercontent.com/BBR2394/simpleCount/PictForReadme/SimpleCount2019.png)
+![alt text](./PictForReadme/SimpleCount2019.png)
