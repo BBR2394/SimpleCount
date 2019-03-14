@@ -23,6 +23,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 
+/* c'est ici que tout l'affichage se fait */
+/* here all about the user interface is done */
 public class View extends JFrame {
 	private JPanel calculette = new JPanel();
 	private JPanel numbers = new JPanel();
@@ -97,7 +99,7 @@ public class View extends JFrame {
 		Font font = new Font("SansSerif", Font.BOLD, 18);
 		
 		this.setTitle("bonjour");
-		this.setSize(300, 275);
+		this.setSize(300, 425);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setResizable(false);
@@ -105,10 +107,10 @@ public class View extends JFrame {
 	    screen.setFont(font);
 	    screen.setHorizontalAlignment(SwingConstants.RIGHT);
 	    	    
-	    screen.setPreferredSize(new Dimension(225, 30));
-	    numbers.setPreferredSize(new Dimension(150, 125));
-	    operator.setPreferredSize(new Dimension(100, 125));
-	    calcAdvance.setPreferredSize(new Dimension(250, 100));
+	    screen.setPreferredSize(new Dimension(250, 30));
+	    numbers.setPreferredSize(new Dimension(300, 140));
+	    operator.setPreferredSize(new Dimension(300, 100));
+	    calcAdvance.setPreferredSize(new Dimension(300, 100));
 	    
 	    buttonPlus.addActionListener(_bOpeListen);
 	    buttonSubs.addActionListener(_bOpeListen);
